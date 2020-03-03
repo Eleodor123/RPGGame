@@ -4,15 +4,17 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
 public class GeekRpgGame extends ApplicationAdapter {
     private SpriteBatch batch;
-    private Texture textureGrass;
-    private Texture texturePointer;
-    private Vector2 pointerPosition;
-    private float rt;
+    private BitmapFont font32;
+    private TextureAtlas atlas;
+    private TextureRegion textureGrass;
     private Hero hero;
 
     // Домашнее задание:
@@ -21,11 +23,11 @@ public class GeekRpgGame extends ApplicationAdapter {
 
     @Override
     public void create() {
-        batch = new SpriteBatch();
-        hero = new Hero();
-        textureGrass = new Texture("grass.png");
-        texturePointer = new Texture("pointer.png");
-        pointerPosition = new Vector2(0, 0);
+        this.batch = new SpriteBatch();
+        this.atlas = new TextureAtlas("game.pack");
+        this.hero = new Hero(atlas);
+        this.textureGrass = atlas.findRegion("grass");
+        this.font32 = new BitmapFont(Gdx.files.internal("font32.fnt"));
     }
 
     @Override
@@ -40,21 +42,14 @@ public class GeekRpgGame extends ApplicationAdapter {
                 batch.draw(textureGrass, i * 80, j * 80);
             }
         }
-        batch.draw(texturePointer, pointerPosition.x - 32, pointerPosition.y - 32, 32, 32, 64, 64, 1, 1, rt, 0, 0, 64, 64, false, false);
+
         hero.render(batch);
+        hero.renderGUI(batch, font32);
         batch.end();
     }
 
     public void update(float dt) {
-
-        rt -= dt * 90.0f;
         hero.update(dt);
-        hero.update(pointerPosition, dt);
-        if (Gdx.input.justTouched()) {
-            hero.startWalk();
-            pointerPosition.set(Gdx.input.getX(), 720.0f - Gdx.input.getY());
-        }
-
     }
 
     @Override
