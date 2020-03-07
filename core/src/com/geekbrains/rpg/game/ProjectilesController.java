@@ -13,8 +13,8 @@ public class ProjectilesController extends ObjectPool<Projectile> {
         return new Projectile();
     }
 
-    public ProjectilesController(TextureAtlas atlas) {
-        this.projectileTextureRegion=atlas.findRegion("arrow");
+    public ProjectilesController() {
+        this.projectileTextureRegion=Assets.getInstance().getAtlas().findRegion("arrow");
     }
 
     public void setup(float x, float y, float targetX, float targetY) {
