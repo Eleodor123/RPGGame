@@ -23,9 +23,14 @@ public class Hero {
     private int hp;
     private int hpMax;
     private StringBuilder strBuilder;
+    private int coins;
 
     public Vector2 getPosition() {
         return position;
+    }
+
+    public void addCoins(int amount) {
+        coins += amount;
     }
 
     public Hero(GameScreen gameScreen) {
@@ -52,6 +57,7 @@ public class Hero {
         strBuilder.setLength(0);
         strBuilder.append("Class: ").append("Spacemarine").append("\n");
         strBuilder.append("HP: ").append("10").append("\n");
+        strBuilder.append("Coins: ").append(coins).append("\n");
         strBuilder.append(gameScreen.getProjectilesController().getActiveList().size());
         font.draw(batch,strBuilder,10,700);
     }
@@ -69,6 +75,14 @@ public class Hero {
             position.mulAdd(tmp, dt);
         } else {
             position.set(dst);
+        }
+    }
+
+    public void takeDamage(int amount) {
+        hp -= amount;
+        if (hp <= 0) {
+            hp = hpMax;
+            coins = 0;
         }
     }
 }
