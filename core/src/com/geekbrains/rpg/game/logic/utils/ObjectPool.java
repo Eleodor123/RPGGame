@@ -1,4 +1,4 @@
-package com.geekbrains.rpg.game;
+package com.geekbrains.rpg.game.logic.utils;
 
 import java.util.ArrayList;
 import java.util.List;
