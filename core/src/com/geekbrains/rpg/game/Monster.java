@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
 public class Monster {
@@ -16,8 +17,10 @@ public class Monster {
     private Vector2 tmp;
     private float lifetime;
     private float speed;
+    private float attackTime;
     private int hp;
     private int hpMax;
+
 
     public Vector2 getPosition() {
         return position;
@@ -35,8 +38,17 @@ public class Monster {
         this.hp = 30;
     }
 
-    public void takeDamage(int amount) {
+    public boolean takeDamage(int amount) {
         hp -= amount;
+        if (hp<=0) {
+            return true;
+        }
+        return false;
+    }
+
+    public void recreate() {
+        this.position.set(MathUtils.random(0,1280), MathUtils.random(0,720));
+        this.hp = this.hpMax;
     }
 
     public void render(SpriteBatch batch) {
@@ -48,6 +60,13 @@ public class Monster {
 
     public void update(float dt) {
         lifetime += dt;
+        if (this.position.dst(gameScreen.getHero().getPosition()) < 40) {
+            attackTime += dt;
+            if (attackTime > 0.3f) {
+                attackTime = 0.0f;
+                gameScreen.getHero().takeDamage(1);
+            }
+        }
         tmp.set(gameScreen.getHero().getPosition()).sub(position).nor().scl(speed);
         position.mulAdd(tmp, dt);
     }
