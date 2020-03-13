@@ -11,7 +11,7 @@ import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 
 public class Hero {
-    private GeekRpgGame game;
+    private GameScreen gameScreen;
     private TextureRegion texture;
     private TextureRegion texturePointer;
     private TextureRegion textureHp;
@@ -28,11 +28,11 @@ public class Hero {
         return position;
     }
 
-    public Hero(GeekRpgGame game, TextureAtlas atlas) {
-        this.game = game;
-        this.texture = atlas.findRegion("sm");
-        this.texturePointer = atlas.findRegion("pointer");
-        this.textureHp = atlas.findRegion("hp");
+    public Hero(GameScreen gameScreen) {
+        this.gameScreen = gameScreen;
+        this.texture = Assets.getInstance().getAtlas().findRegion("sm");
+        this.texturePointer = Assets.getInstance().getAtlas().findRegion("pointer");
+        this.textureHp = Assets.getInstance().getAtlas().findRegion("hp");
         this.position = new Vector2(100, 100);
         this.dst = new Vector2(position);
         this.tmp = new Vector2(0,0);
@@ -52,7 +52,7 @@ public class Hero {
         strBuilder.setLength(0);
         strBuilder.append("Class: ").append("Spacemarine").append("\n");
         strBuilder.append("HP: ").append("10").append("\n");
-        strBuilder.append(game.getProjectilesController().getActiveList().size());
+        strBuilder.append(gameScreen.getProjectilesController().getActiveList().size());
         font.draw(batch,strBuilder,10,700);
     }
 
@@ -62,7 +62,7 @@ public class Hero {
             dst.set(Gdx.input.getX(), 720.0f - Gdx.input.getY());
         }
         if (Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT)) {
-            game.getProjectilesController().setup(position.x, position.y, Gdx.input.getX(), 720.0f - Gdx.input.getY());
+            gameScreen.getProjectilesController().setup(position.x, position.y, Gdx.input.getX(), 720.0f - Gdx.input.getY());
         }
         tmp.set(dst).sub(position).nor().scl(speed); // вектор скорости
         if (position.dst(dst) > speed * dt) {
