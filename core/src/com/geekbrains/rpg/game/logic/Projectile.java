@@ -1,15 +1,27 @@
-package com.geekbrains.rpg.game;
+package com.geekbrains.rpg.game.logic;
 
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.geekbrains.rpg.game.logic.utils.MapElement;
+import com.geekbrains.rpg.game.logic.utils.Poolable;
 
-public class Projectile implements Poolable {
+public class Projectile implements Poolable, MapElement {
     private TextureRegion textureRegion;
     private Vector2 position;
     private Vector2 velocity;
     private boolean active;
+
+    @Override
+    public int getCellX() {
+        return (int)position.x/80;
+    }
+
+    @Override
+    public int getCellY() {
+        return (int)position.y/80;
+    }
 
     public Vector2 getPosition() {
         return position;
@@ -38,7 +50,8 @@ public class Projectile implements Poolable {
         active = false;
     }
 
-    public void render(SpriteBatch batch) {
+    @Override
+    public void render(SpriteBatch batch, BitmapFont font) {
         batch.draw(textureRegion, position.x - 30, position.y - 30, 30, 30, 60, 60, 1, 1, velocity.angle());
     }
 

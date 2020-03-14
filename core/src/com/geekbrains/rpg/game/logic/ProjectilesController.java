@@ -1,9 +1,10 @@
-package com.geekbrains.rpg.game;
+package com.geekbrains.rpg.game.logic;
 
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.geekbrains.rpg.game.logic.utils.ObjectPool;
+import com.geekbrains.rpg.game.screens.utils.Assets;
 
 public class ProjectilesController extends ObjectPool<Projectile> {
     private TextureRegion projectileTextureRegion;
@@ -14,7 +15,7 @@ public class ProjectilesController extends ObjectPool<Projectile> {
     }
 
     public ProjectilesController() {
-        this.projectileTextureRegion=Assets.getInstance().getAtlas().findRegion("arrow");
+        this.projectileTextureRegion= Assets.getInstance().getAtlas().findRegion("arrow");
     }
 
     public void setup(float x, float y, float targetX, float targetY) {
@@ -23,7 +24,7 @@ public class ProjectilesController extends ObjectPool<Projectile> {
 
     public void render(SpriteBatch batch) {
         for (int i = 0; i < getActiveList().size();i++) {
-            getActiveList().get(i).render(batch);
+            getActiveList().get(i).render(batch, null);
         }
     }
 
