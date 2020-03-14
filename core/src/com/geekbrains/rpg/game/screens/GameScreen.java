@@ -8,7 +8,6 @@ public class GameScreen extends AbstractScreen {
     private GameController gc;
     private WorldRenderer worldRenderer;
 
-
     public GameScreen(SpriteBatch batch) {
         super(batch);
     }
@@ -23,9 +22,5 @@ public class GameScreen extends AbstractScreen {
     public void render(float delta) {
         gc.update(delta);
         worldRenderer.render();
-
     }
-
-
-
 }

@@ -8,11 +8,9 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.geekbrains.rpg.game.screens.utils.Assets;
 
 public class Hero extends GameCharacter{
-
     private TextureRegion texturePointer;
     private int coins;
     private StringBuilder strBuilder;
-
 
     public void addCoins(int amount) {
         coins += amount;
@@ -22,10 +20,11 @@ public class Hero extends GameCharacter{
         super(gc, 10, 300.0f);
         this.texture = Assets.getInstance().getAtlas().findRegion("sm");
         this.texturePointer = Assets.getInstance().getAtlas().findRegion("pointer");
-        this.changePosition(100, 100);
+        this.changePosition(100.0f, 100.0f);
         this.dst.set(position);
-        this.speed = 300.0f;
         this.strBuilder = new StringBuilder();
+        this.type = Type.RANGED;
+        this.attackRadius = 150.0f;
     }
 
     @Override
@@ -38,13 +37,14 @@ public class Hero extends GameCharacter{
     public void renderGUI (SpriteBatch batch, BitmapFont font) {
         strBuilder.setLength(0);
         strBuilder.append("Class: ").append("Spacemarine").append("\n");
-        strBuilder.append("HP: ").append(hp).append("/").append("10").append("\n");
+        strBuilder.append("HP: ").append(hp).append("/").append(hpMax).append("\n");
         strBuilder.append("Coins: ").append(coins).append("\n");
         font.draw(batch,strBuilder,10,700);
     }
 
     @Override
     public void onDeath(){
+        super.onDeath();
         coins = 0;
         hp = hpMax;
     }
@@ -53,13 +53,17 @@ public class Hero extends GameCharacter{
     public void update(float dt) {
         super.update(dt);
         if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
+            for (int i = 0; i < gc.getMonstersController().getActiveList().size(); i++) {
+                Monster m = gc.getMonstersController().getActiveList().get(i);
+                if (m.getPosition().dst(Gdx.input.getX(), 720.0f - Gdx.input.getY()) < 30.0f) {
+                    state = State.ATTACK;
+                    target = m;
+                    return;
+                }
+            }
             dst.set(Gdx.input.getX(), 720.0f - Gdx.input.getY());
+            state = State.MOVE;
+            target = null;
         }
-        if (Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT)) {
-            gc.getProjectilesController().setup(position.x, position.y, Gdx.input.getX(), 720.0f - Gdx.input.getY());
-        }
-
     }
-
-
 }

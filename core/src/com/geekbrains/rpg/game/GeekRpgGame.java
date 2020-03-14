@@ -1,4 +1,4 @@
-package com.geekbrains.rpg.game.logic;
+package com.geekbrains.rpg.game;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;

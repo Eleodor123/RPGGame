@@ -9,6 +9,7 @@ import com.geekbrains.rpg.game.screens.utils.Assets;
 public class Map {
     public static final int MAP_CELLS_WIDTH = 16;
     public static final int MAP_CELLS_HEIGHT = 9;
+
     private byte[][] data;
     private TextureRegion grassTexture;
     private TextureRegion wallTexture;
@@ -18,11 +19,14 @@ public class Map {
     }
 
     public boolean isGroundPassable(int cellX, int cellY) {
+        if (cellX < 0 || cellY < 0 || cellX >= MAP_CELLS_WIDTH || cellY >= MAP_CELLS_HEIGHT) {
+            return false;
+        }
         return data[cellX][cellY] == 0;
     }
 
     public boolean isGroundPassable(Vector2 position) {
-        return data[(int)(position.x / 80)][(int)(position.y / 80)] == 0;
+        return isGroundPassable((int) (position.x / 80), (int) (position.y / 80));
     }
 
     public Map() {
@@ -35,12 +39,12 @@ public class Map {
     }
 
     public void renderGround(SpriteBatch batch, int x, int y) {
-        batch.draw(grassTexture, x*80, y*80);
+        batch.draw(grassTexture, x * 80, y * 80);
     }
 
     public void renderUpper(SpriteBatch batch, int x, int y) {
         if (data[x][y] == 1) {
-            batch.draw(wallTexture, x*80, y*80);
+            batch.draw(wallTexture, x * 80, y * 80);
         }
     }
 }

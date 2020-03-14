@@ -2,7 +2,7 @@ package com.geekbrains.rpg.game.screens;
 
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.geekbrains.rpg.game.logic.GeekRpgGame;
+import com.geekbrains.rpg.game.GeekRpgGame;
 import com.geekbrains.rpg.game.screens.utils.Assets;
 
 public class ScreenManager {
