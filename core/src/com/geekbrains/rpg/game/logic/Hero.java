@@ -7,44 +7,46 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.geekbrains.rpg.game.screens.utils.Assets;
 
-public class Hero extends GameCharacter{
-
+public class Hero extends GameCharacter {
     private TextureRegion texturePointer;
     private int coins;
     private StringBuilder strBuilder;
-
 
     public void addCoins(int amount) {
         coins += amount;
     }
 
     public Hero(GameController gc) {
-        super(gc, 10, 300.0f);
-        this.texture = Assets.getInstance().getAtlas().findRegion("sm");
+        super(gc, 80, 300.0f);
+        this.textures = new TextureRegion(Assets.getInstance().getAtlas().findRegion("sm")).split(60, 60);
         this.texturePointer = Assets.getInstance().getAtlas().findRegion("pointer");
-        this.changePosition(100, 100);
+        this.changePosition(100.0f, 100.0f);
         this.dst.set(position);
-        this.speed = 300.0f;
         this.strBuilder = new StringBuilder();
+        this.weapon = Weapon.createSimpleMeleeWeapon();
     }
 
     @Override
     public void render(SpriteBatch batch, BitmapFont font) {
         batch.draw(texturePointer, dst.x - 30, dst.y - 30, 30, 30, 60, 60, 0.5f, 0.5f, lifetime * 90.0f);
-        batch.draw(texture, position.x - 30, position.y - 30, 30, 30, 60, 60, 1, 1, 0);
-        batch.draw(textureHp, position.x - 30, position.y + 30, 60 * ((float) hp / hpMax), 12);
+        batch.draw(textures[0][getCurrentFrameIndex()], position.x - 30, position.y - 30, 30, 30, 60, 60, 1, 1, 0);
+        if(hp <hpMax) {
+            batch.draw(textureHp, position.x - 30, position.y + 30, 60 * ((float) hp / hpMax), 12);
+        }
     }
 
-    public void renderGUI (SpriteBatch batch, BitmapFont font) {
+    public void renderGUI(SpriteBatch batch, BitmapFont font) {
         strBuilder.setLength(0);
         strBuilder.append("Class: ").append("Spacemarine").append("\n");
-        strBuilder.append("HP: ").append(hp).append("/").append("10").append("\n");
+        strBuilder.append("HP: ").append(hp).append(" / ").append(hpMax).append("\n");
         strBuilder.append("Coins: ").append(coins).append("\n");
-        font.draw(batch,strBuilder,10,700);
+        strBuilder.append("Weapon: ").append(weapon.getTitle()).append(" [").append(weapon.getMinDamage()).append("-").append(weapon.getMaxDamage()).append("]\n");
+        font.draw(batch, strBuilder, 10, 710);
     }
 
     @Override
-    public void onDeath(){
+    public void onDeath() {
+        super.onDeath();
         coins = 0;
         hp = hpMax;
     }
@@ -53,13 +55,17 @@ public class Hero extends GameCharacter{
     public void update(float dt) {
         super.update(dt);
         if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
+            for (int i = 0; i < gc.getMonstersController().getActiveList().size(); i++) {
+                Monster m = gc.getMonstersController().getActiveList().get(i);
+                if (m.getPosition().dst(Gdx.input.getX(), 720.0f - Gdx.input.getY()) < 30.0f) {
+                    state = State.ATTACK;
+                    target = m;
+                    return;
+                }
+            }
             dst.set(Gdx.input.getX(), 720.0f - Gdx.input.getY());
+            state = State.MOVE;
+            target = null;
         }
-        if (Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT)) {
-            gc.getProjectilesController().setup(position.x, position.y, Gdx.input.getX(), 720.0f - Gdx.input.getY());
-        }
-
     }
-
-
 }

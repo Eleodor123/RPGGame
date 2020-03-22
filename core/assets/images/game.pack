@@ -17,32 +17,74 @@ dwarf
   orig: 800, 100
   offset: 0, 0
   index: -1
-grass
+simpleButton
+  rotate: false
+  xy: 84, 104
+  size: 320, 80
+  orig: 320, 80
+  offset: 0, 0
+  index: -1
+shortButton
   rotate: false
   xy: 2, 124
   size: 80, 80
   orig: 80, 80
   offset: 0, 0
   index: -1
-sm
+grass
   rotate: false
   xy: 886, 2
+  size: 80, 80
+  orig: 80, 80
+  offset: 0, 0
+  index: -1
+weaponRanged
+  rotate: false
+  xy: 84, 186
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+weaponMelee
+  rotate: false
+  xy: 150, 186
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+sm
+  rotate: false
+  xy: 216, 186
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 pointer
   rotate: false
-  xy: 952, 2
+  xy: 282, 186
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
+dwarf60
+  rotate: false
+  xy: 406, 104
+  size: 480, 60
+  orig: 480, 60
+  offset: 0, 0
+  index: -1
 arrow
   rotate: false
-  xy: 84, 104
+  xy: 406, 166
   size: 60, 60
   orig: 60, 60
+  offset: 0, 0
+  index: -1
+smButton
+  rotate: false
+  xy: 468, 166
+  size: 120, 32
+  orig: 120, 32
   offset: 0, 0
   index: -1
 hp
