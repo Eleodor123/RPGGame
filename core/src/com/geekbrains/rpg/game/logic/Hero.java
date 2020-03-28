@@ -2,6 +2,8 @@ package com.geekbrains.rpg.game.logic;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -9,6 +11,7 @@ import com.geekbrains.rpg.game.screens.utils.Assets;
 
 public class Hero extends GameCharacter {
     private StringBuilder strBuilder;
+    private Sound sound;
 
     public Hero(GameController gc) {
         super(gc, 500, 120.0f);
@@ -17,6 +20,7 @@ public class Hero extends GameCharacter {
         this.dst.set(position);
         this.strBuilder = new StringBuilder();
         this.weapon = gc.getWeaponsController().getOneFromAnyPrototype();
+        this.sound = Gdx.audio.newSound(Gdx.files.internal("audio/explosion.wav"));
     }
 
     public void renderGUI(SpriteBatch batch, BitmapFont font) {
@@ -36,6 +40,13 @@ public class Hero extends GameCharacter {
     }
 
     @Override
+    public boolean takeDamage(GameCharacter attacker, int amount) {
+        // sound.play();
+        gc.getInfoController().setupAnyAmount(position.x, position.y, Color.RED, "-", amount);
+        return super.takeDamage(attacker, amount);
+    }
+
+    @Override
     public void update(float dt) {
         super.update(dt);
         if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
@@ -51,5 +62,9 @@ public class Hero extends GameCharacter {
             state = State.MOVE;
             target = null;
         }
+    }
+
+    public void dispose() {
+        sound.dispose();
     }
 }
