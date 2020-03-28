@@ -23,4 +23,9 @@ public class GameScreen extends AbstractScreen {
         gc.update(delta);
         worldRenderer.render();
     }
+
+    @Override
+    public void dispose() {
+        gc.dispose();
+    }
 }

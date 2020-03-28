@@ -69,12 +69,13 @@ public abstract class GameCharacter implements MapElement {
         return weapon;
     }
 
-    public void restoreHp(float percent) {
+    public int restoreHp(float percent) {
         int amount = (int) (hpMax * percent);
-        hp += amount;
-        if (hp > hpMax) {
-            hp = hpMax;
+        if (hp + amount > hpMax) {
+            amount = hpMax - hp;
         }
+        hp += amount;
+        return amount;
     }
 
     public void changePosition(float x, float y) {
